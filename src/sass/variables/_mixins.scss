@@ -1,0 +1,358 @@
+@mixin breakpoint($point) {
+    @media (max-width: $point) { @content; }
+}
+
+@mixin breakpoint-min($point) {
+    @media (min-width: $point) { @content; }
+}
+
+@mixin hide(){
+	@include opacity(0);
+  	visibility: hidden;
+  	//height: 0; 
+	overflow: hidden;
+	transform: translate3d(-1500px, -250px, 0) rotateY(-90deg);
+}
+
+@mixin invisible(){
+	@include opacity(0);
+  	visibility: hidden;
+  	height: 0; 
+	overflow: hidden;
+}
+
+@mixin visible(){
+	@include opacity(1);
+  	visibility: visible;
+  	height: auto; 
+	overflow: visible;
+}
+
+//custom dashed border with animation
+//usage
+/*
+@include dashed-border($border-mid-grey, 14px, 8px, 2px);
+
+&:hover{
+	@include dashed-border-animated($primary-color);
+}
+*/
+@mixin dashed-border($color, $padding, $width, $height){
+
+	.topbottom,
+	.leftright
+	{
+	  position:absolute;
+	  width:100%;
+	  height:100%;
+	}
+	//left sode
+	.leftright:after
+	{
+		content:'';
+		position:absolute;
+		bottom:0;
+		left:0;
+		top: - $padding;
+		left: - $padding;
+		height:100%;
+		width:2px;
+		background-image: linear-gradient(to top, $color 70%, rgba(255, 255, 255, 0) 0%);
+		background-position: bottom;
+		background-size: $height $width;
+		background-repeat: repeat-y;
+
+	}
+	//right side
+	.leftright:before
+	{
+		content:'';
+		position:absolute;
+		bottom:0;
+		top: - $padding;
+		right: $padding;
+		height:100%;
+		width:2px;
+		background-image: linear-gradient(to top, $color 70%, rgba(255, 255, 255, 0) 0%);
+		background-position: bottom;
+		background-size: $height $width;
+		background-repeat: repeat-y;
+	}
+	//bottom side
+	.topbottom:before
+	{
+		content:'';
+		position:absolute;
+		bottom: $padding;
+		left: - $padding;
+		right:0;
+		height:2px;
+		width:100%;
+		background-image: linear-gradient(to right, $color 71%, rgba(255, 255, 255, 0) 0%);
+		background-position: bottom;
+		background-size: $width $height;
+		background-repeat: repeat-x;
+	}
+	//top side
+	.topbottom:after
+	{
+		content:'';
+		position:absolute;
+		top: - $padding;
+		left: - $padding;
+		right:0;
+		height:2px;
+		width:100%;
+		background-image: linear-gradient(to right, $color 71%, rgba(255, 255, 255, 0) 0%);
+		background-position: top;
+		background-size: $width $height;
+		background-repeat: repeat-x;
+	}
+}
+
+@mixin dashed-border-animated($color){
+	@keyframes move-top{
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 10px 0px;
+		}
+	}
+	@keyframes move-bottom{
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: -10px 0px;
+		}
+	}
+	@keyframes move-left{
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 0px -10px;
+		}
+	}
+	@keyframes move-right{
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 0px 10px;
+		}
+	}
+
+	.leftright{
+		&:after{
+			animation: move-left 1s linear infinite;
+		}
+		&:before{
+			animation: move-right 1s linear infinite;
+		}
+		&:after,
+		&:before{
+			background-image: linear-gradient(to top, $color 70%, rgba(255, 255, 255, 0) 0%);
+		}
+	}
+	.topbottom {
+		&:after{
+			animation: move-top 1s linear infinite;
+		}
+		&:before{
+			animation: move-bottom 1s linear infinite;
+		}
+		&:after,
+		&:before{
+			background-image: linear-gradient(to right, $color 70%, rgba(255, 255, 255, 0) 0%);
+		}
+	}
+}
+
+
+/**
+ * Mixin to put items on a circle
+ * [1] - Allows children to be absolutely positioned
+ * [2] - Allows the mixin to be used on a list
+ * [3] - In case box-sizing: border-box has been enabled
+ * [4] - Allows any type of direct children to be targeted
+ */
+
+@mixin putOnCircle( 
+          $nb-items, //Number of items
+          $circle-size, //Parent size
+          $item-size, //Item size
+          $class-for-IE: false //Base class name, false means use of pseudo-selectors
+       ) {
+  $half-item:     $item-size / 2;
+  $half-parent: $circle-size / 2;
+  
+  position: relative;               /* [1] */
+  width:  $circle-size;
+  height: $circle-size;
+  padding: 0;
+  border-radius: 50%; 
+  list-style: none;                 /* [2] */ 
+  @include box-sizing(content-box); /* [3] */ 
+  
+  > * {                             /* [4] */
+    display: block;
+    position: absolute;
+    top:  50%; 
+    left: 50%;
+    width:  $item-size;
+    height: $item-size;
+    margin: -$half-item;
+  
+    $angle: 360 / $nb-items;
+    $rot: 0;
+    @for $i from 1 to $nb-items+1 {
+      
+      // If no support for IE8-
+      
+      @if $class-for-IE == false {
+        &:nth-of-type(#{$i}) {
+          @include transform(rotate(#{$rot}deg) translate($half-parent) rotate(-#{$rot}deg));
+        }
+      }
+      
+      // If support for IE8-  
+      
+      @else {
+        &.#{$class-for-IE}#{$i} {
+          // If CSS transforms are not supported
+          $mt: sin($rot * pi() / 180) * $half-parent - $half-item;
+          $ml: cos($rot * pi() / 180) * $half-parent - $half-item;
+          margin: $mt 0 0 $ml;
+        }
+      }
+      $rot: $rot + $angle;
+    }
+  }
+}
+
+.circle-container {
+  @include putOnCircle(5, 500px, 6em, false); 
+
+  a {
+    display: block;
+  }
+  
+  img { 
+    display: block; 
+    width: 100%; 
+  }
+}
+
+
+@mixin preloader($width, $speed, $colorStart, $colorEnd){
+  
+  position: relative;
+  width: $width;
+  height: $width;
+  
+  span{
+      display: block;
+      bottom: 0px;
+      width: $width/2;
+      height: $width/2;
+      background: $colorStart;
+      position: absolute;
+  }
+  span:nth-child(1){
+    animation: preloader1 $speed infinite ease-in-out;
+  }
+  span:nth-child(2){
+    left:20px;
+    animation: preloader2 $speed infinite ease-in-out;
+  }
+  span:nth-child(3){
+    top:0px;
+    animation: preloader3 $speed infinite ease-in-out;
+  }
+  span:nth-child(4){
+    top:0px;
+    left:20px;
+    animation: preloader4 $speed infinite ease-in-out;
+  }
+   
+  @keyframes preloader1 {
+      0% {
+        @include transform(translate(0, 0) rotate(0deg));
+        border-radius:0px;
+      }
+      50% {
+        @include transform(translate(-$width/2, -$width/4) rotate(-180deg));
+        border-radius:20px;
+        background:$colorEnd;
+      }
+      80% {
+        @include transform(translate(0, 0) rotate(-360deg));
+        border-radius:0px;
+      }
+      100% {
+        @include transform(translate(0, 0) rotate(-360deg));
+        border-radius:0px;
+      }
+  }
+  @keyframes preloader2 {
+      0% {
+        @include transform(translate(0, 0) rotate(0deg));
+        border-radius:0px;
+      }
+      50% {
+        @include transform(translate($width/2, -$width/4) rotate(180deg));
+        border-radius:20px;
+        background:$colorEnd;
+      }
+      80% {
+        @include transform(translate(0, 0) rotate(360deg));
+        border-radius:0px;
+      }
+      100% {
+        @include transform(translate(0, 0) rotate(360deg));
+        border-radius:0px;
+      }
+  }
+  @keyframes preloader3 {
+      0% {
+        @include transform(translate(0, 0) rotate(0deg));
+        border-radius:0px;
+      }
+      50% {
+        @include transform(translate(-$width/2, $width/4) rotate(-180deg));
+        border-radius:20px;
+        background:$colorEnd;
+      }
+      80% {
+        @include transform(translate(0, 0) rotate(-360deg));
+        border-radius:0px;
+      }
+      100% {
+        @include transform(translate(0, 0) rotate(-360deg));
+        border-radius:0px;
+      }
+  }
+   
+  @keyframes preloader4 {
+      0% {
+        @include transform(translate(0, 0) rotate(0deg));
+        border-radius:0px;
+      }
+      50% {
+        @include transform(translate($width/2, $width/4) rotate(180deg));
+        border-radius:20px;
+        background:$colorEnd;
+      }
+      80% {
+        @include transform(translate(0, 0) rotate(360deg));
+        border-radius:0px;
+      }
+      100% {
+        @include transform(translate(0, 0) rotate(360deg));
+        border-radius:0px;
+      }
+  }
+  
+}

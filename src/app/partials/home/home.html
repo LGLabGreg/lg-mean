@@ -1,0 +1,20 @@
+<div class="home content wrapper">
+	<div class="container">
+		<div class="one content-wrapper">
+			<h1 class="title">Todos</h1>
+      <p ng-repeat="todo in todos">{{todo.text}} <a href ng-click="deleteTodo(todo._id)">delete</a></p>
+		</div>
+
+    <div class="one content-wrapper">
+      <h1 class="title">Create Todo</h1>
+      <form>
+        <div class="form-item">
+          <input type="text" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
+        </div>
+        <button type="button" class="" ng-click="createTodo()">Add</button>
+      </form>
+    </div>
+
+	</div>
+</div>
+

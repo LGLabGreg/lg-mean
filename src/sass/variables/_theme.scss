@@ -1,0 +1,39 @@
+/**
+//////////////////////////////
+COLORS
+//////////////////////////////
+**/
+$primary-color: #01abe6;
+$secondary-color: #ebaa3d;
+
+
+$light-grey: #eee;
+$grey: #9b9b9b;
+$dark-grey: #4a4a4a;
+
+$red: #d0021b;
+
+.primary-color{
+	color: $primary-color;
+}
+
+.secondary-color{
+	color: $secondary-color;
+}
+
+
+/**
+//////////////////////////////
+TYPOGRAPHY
+//////////////////////////////
+**/
+$base-font: 'Cantarell', Arial, sans-serif;
+$heading-font: 'Raleway', Arial, sans-serif;
+
+$base-font-size: 14px;
+$base-line-height: 21px;
+$small-font-size: 12px;
+$small-line-height: 18px;
+$large-font-size: 16px;
+$large-line-height: 25px;
+
