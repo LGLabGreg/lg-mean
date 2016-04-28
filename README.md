@@ -3,8 +3,7 @@ A very light starter kit for [MEAN](http://meanjs.org) stack apps.
 MEAN = [MogoDB](http://mongodb.org/), [Express](http://expressjs.com/), [Angular](http://angularjs.org/), and [Node](http://nodejs.org/).
 
 
-# lg-angular
-Base angular framework with Grunt - This is very basic setup and is for personal use but feel free to use it. It contains a simple apiService, basic route setup and example controller with interaction with the apiService.
+Base mean stack framework with Grunt - This is very basic setup and is for personal use but feel free to use it. It contains a simple apiService, basic route setup and example controller with interaction with the apiService.
 
 ## Requirements
 
@@ -18,7 +17,8 @@ Base angular framework with Grunt - This is very basic setup and is for personal
 
 1. $ npm install -g grunt-cli
 2. $ git clone https://github.com/LGLabGreg/lg-mean.git
-3. npm install
+2. $ cd lg-mean
+3. $ npm install
 
 ## Grunt tasks
 
@@ -32,5 +32,5 @@ Base angular framework with Grunt - This is very basic setup and is for personal
     * node server (8080)
 
 ## Config
-The project contains a config file (src/app/config/config.js). 
+The project contains a front-end config file (src/app/config/config.js) and a server config folder (config/)
 
