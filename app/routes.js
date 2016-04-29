@@ -3,10 +3,14 @@ var Todo = require('./models/todo');
 module.exports = function(app) {
 
   // server routes ===========================================================
-  // handle things like api calls
   // authentication routes
+  app.use('/', function(req, res, next) {
+    // do logging
+    console.log('Something is happening.');
+    next(); // make sure we go to the next routes and don't stop here
+  });
 
-  // sample api route
+  //GET
   app.get('/api/todos', function(req, res) {
     // use mongoose to get all nerds in the database
     Todo.find(function(err, things) {
@@ -20,7 +24,7 @@ module.exports = function(app) {
     });
   });
 
-  // create todo and send back all todos after creation
+  //POST
   app.post('/api/todos', function(req, res) {
 
     // create a todo, information comes from AJAX request from Angular
@@ -41,7 +45,7 @@ module.exports = function(app) {
 
   });
 
-  // delete a todo
+  //PUT
   app.put('/api/todos/:todo_id', function(req, res) {
     Todo.findById({
       _id: req.params.todo_id
@@ -69,7 +73,7 @@ module.exports = function(app) {
     });
   });
 
-  // delete a todo
+  //DELETE
   app.delete('/api/todos/:todo_id', function(req, res) {
     Todo.remove({
       _id: req.params.todo_id

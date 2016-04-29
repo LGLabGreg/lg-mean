@@ -17,20 +17,33 @@ Base mean stack framework with Grunt - This is very basic setup and is for perso
 
 1. $ npm install -g grunt-cli
 2. $ git clone https://github.com/LGLabGreg/lg-mean.git
-2. $ cd lg-mean
-3. $ npm install
+3. $ cd lg-mean
+4. $ npm install
+5. $ mkdir data
 
 ## Grunt tasks
 
 ### grunt build
     * concat/uglyfing/minify js and sass from src folder to build folder
     * copy html files and images into build folder
-    * node server (8080)
 
 ### grunt development
     * same as build plus watch for file changes in src folder
-    * node server (8080)
 
 ## Config
 The project contains a front-end config file (src/app/config/config.js) and a server config folder (config/)
+
+## Run
+
+### development
+
+1. $ grunt development
+2. $ mongod --dbpath=./data
+3. $ node server
+
+### production
+
+1. $ grunt build
+2. $ mongod --dbpath=./data
+3. $ node server
 

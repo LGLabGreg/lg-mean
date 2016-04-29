@@ -1,5 +1,7 @@
 /build
 /bower_components
 /node_modules
+/data
 .sass-cache
 .DS_Store
+*.wt
