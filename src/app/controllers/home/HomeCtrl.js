@@ -22,7 +22,7 @@ angular.module('app.controllers.home', [])
     }
     */
 
-    $scope.formData = {};
+    $scope.createTodoData = {};
 
     // when landing on the page, get all todos and show them
     $http.get('/api/todos')
@@ -37,9 +37,9 @@ angular.module('app.controllers.home', [])
 
     // when submitting the add form, send the text to the node API
     $scope.createTodo = function() {
-      $http.post('/api/todos', $scope.formData)
+      $http.post('/api/todos', $scope.createTodoData)
         .success(function(data) {
-          $scope.formData = {}; // clear the form so our user is ready to enter another
+          $scope.createTodoData = {}; // clear the form so our user is ready to enter another
           $scope.todos = data;
           console.log(data);
         })

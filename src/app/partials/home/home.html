@@ -1,19 +1,31 @@
-<div class="home content wrapper">
+<div class="content wrapper">
 	<div class="container">
-		<div class="one content-wrapper">
-			<h1 class="title">Todos</h1>
-      <p ng-repeat="todo in todos">{{todo.text}} <a href ng-click="deleteTodo(todo._id)">delete</a></p>
-		</div>
 
-    <div class="one content-wrapper">
+    <div class="one create-container">
       <h1 class="title">Create Todo</h1>
       <form>
         <div class="form-item">
-          <input type="text" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
+          <input type="text" placeholder="What do you need to do?" ng-model="createTodoData.text">
+          <button type="button" ng-click="createTodo()"><i class="fa fa-plus"></i></button>
         </div>
-        <button type="button" class="" ng-click="createTodo()">Add</button>
       </form>
     </div>
+
+  	<div class="one todos-container">
+  		<h1 class="title">My Todos</h1>
+      <form>
+
+        <div class="form-item" ng-repeat="todo in todos" ng-init="todo.editMode = false">
+          <div class="text" ng-if="!todo.editMode">{{todo.text}}</div>
+          <input type="text" ng-if="todo.editMode" ng-model="todo.text">
+          <button type="button" ng-click="deleteTodo(todo._id)"><i class="fa fa-trash"></i></button>
+          <button type="button" ng-if="todo.editMode" ng-click="todo.editMode = false"><i class="fa fa-close"></i></button>
+          <button type="button" ng-if="todo.editMode" ng-click="saveTodo(todo)"><i class="fa fa-save"></i></button>
+          <button type="button" ng-if="!todo.editMode" ng-click="todo.editMode = true"><i class="fa fa-pencil"></i></button>
+        </div>
+
+      </form>
+  	</div>
 
 	</div>
 </div>
