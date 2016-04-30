@@ -37,6 +37,7 @@ body{
 	background: #fff;
 	color: #333;
 	min-height: 100%;
+	padding-bottom: 50px;
 	//overflow-y: hidden;
 	overflow-x: hidden;
 	&.auto{
@@ -247,6 +248,10 @@ FOOTER
 footer.main{
 	position: fixed;
 	bottom: 0;
+	background: #666;
+	color: #fff;
+	height: 30px;
+	line-height: 30px;
 }
 
 /**

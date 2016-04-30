@@ -5,22 +5,24 @@ module.exports = function(app) {
   // server routes ===========================================================
   // authentication routes
   app.use('/', function(req, res, next) {
+
+    //console.log(JSON.stringify(req.body));
     // do logging
-    console.log('Something is happening.');
+    //console.log('middleware');
     next(); // make sure we go to the next routes and don't stop here
   });
 
   //GET
   app.get('/api/todos', function(req, res) {
     // use mongoose to get all nerds in the database
-    Todo.find(function(err, things) {
+    Todo.find(function(err, todos) {
 
       // if there is an error retrieving, send the error. 
       // nothing after res.send(err) will execute
       if (err)
         res.send(err);
 
-      res.json(things); // return all nerds in JSON format
+      res.json(todos); // return all nerds in JSON format
     });
   });
 
@@ -46,10 +48,13 @@ module.exports = function(app) {
   });
 
   //PUT
-  app.put('/api/todos/:todo_id', function(req, res) {
-    Todo.findById({
-      _id: req.params.todo_id
+  app.put('/api/todos', function(req, res) {
+    console.log('put: ' + JSON.stringify(req.body));
+    Todo.findOne({
+      _id: req.body._id
     }, function(err, todo) {
+      console.log('found: ' + JSON.stringify(todo));
+      console.log('found txt: ' + JSON.stringify(todo.text));
       if (err)
         res.send(err);
 
@@ -61,15 +66,15 @@ module.exports = function(app) {
         if (err)
           res.send(err);
         console.log('User successfully updated!');
+
+        // get and return all the todos after you create another
+        Todo.find(function(err, todos) {
+          if (err)
+            res.send(err)
+          res.json(todos);
+        });
       });
 
-      // get and return all the todos after you create another
-      Todo.find(function(err, todos) {
-        if (err)
-          res.send(err)
-        res.json(todos);
-      });
-      
     });
   });
 

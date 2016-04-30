@@ -351,6 +351,17 @@ angular.module('app.controllers.home', [])
         });
     };
 
+    $scope.updateTodo = function(todo) {
+      $http.put('/api/todos', todo)
+        .success(function(data) {
+          $scope.todos = data;
+          console.log(data);
+        })
+        .error(function(data) {
+          console.log('Error: ' + data);
+        });
+    };
+
     // delete a todo after checking it
     $scope.deleteTodo = function(id) {
       $http.delete('/api/todos/' + id)

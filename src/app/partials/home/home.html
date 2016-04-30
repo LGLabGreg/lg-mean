@@ -20,7 +20,7 @@
           <input type="text" ng-if="todo.editMode" ng-model="todo.text">
           <button type="button" ng-click="deleteTodo(todo._id)"><i class="fa fa-trash"></i></button>
           <button type="button" ng-if="todo.editMode" ng-click="todo.editMode = false"><i class="fa fa-close"></i></button>
-          <button type="button" ng-if="todo.editMode" ng-click="saveTodo(todo)"><i class="fa fa-save"></i></button>
+          <button type="button" ng-if="todo.editMode" ng-click="updateTodo(todo)"><i class="fa fa-save"></i></button>
           <button type="button" ng-if="!todo.editMode" ng-click="todo.editMode = true"><i class="fa fa-pencil"></i></button>
         </div>
 
