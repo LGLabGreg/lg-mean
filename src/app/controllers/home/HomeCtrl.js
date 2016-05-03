@@ -3,73 +3,53 @@
 angular.module('app.controllers.home', [])
   .controller( 'HomeCtrl',  function($scope, _, apiService, $http) {
 
-    $scope.view = 'all';
-
-    /*
-    apiService.sendApiRequest(apiService.buildUrl('posts.all'), 'GET').then(function(response){
-      $scope.posts = response;
-      angular.element('.preloader-wrapper').removeClass('visible');
-    });//Handle API errors in apiService
-
-
-    $scope.readMore = function(post){
-      angular.element('.preloader-wrapper').addClass('visible');
-      apiService.sendApiRequest(apiService.buildUrl('posts.item', {id: post.id}), 'GET').then(function(response){
-        $scope.post = response;
-        $scope.view = 'detail';
-        angular.element('.preloader-wrapper').removeClass('visible');
-      });
-    }
-    */
-
     $scope.createTodoData = {};
 
-    // when landing on the page, get all todos and show them
-    $http.get('/api/todos')
-      .success(function(data) {
-        $scope.todos = data;
+    //Init page, get all todos
+    function init(){
+      apiService.sendApiRequest(apiService.buildUrl('todos.all'), 'GET').then(function(response){
+        $scope.todos = response;
         angular.element('.preloader-wrapper').removeClass('visible');
-        console.log(data);
-      })
-      .error(function(data) {
+      }, function(err){
         console.log('Error: ' + data);
       });
+    };
+    init();
 
-    // when submitting the add form, send the text to the node API
+
+    //Create a todo
     $scope.createTodo = function() {
-      $http.post('/api/todos', $scope.createTodoData)
-        .success(function(data) {
-          $scope.createTodoData = {}; // clear the form so our user is ready to enter another
-          $scope.todos = data;
-          console.log(data);
-        })
-        .error(function(data) {
-          console.log('Error: ' + data);
-        });
+      angular.element('.preloader-wrapper').addClass('visible');
+      apiService.sendApiRequest(apiService.buildUrl('todos.all'), 'POST', $scope.createTodoData).then(function(response){
+        $scope.todos = response;
+        angular.element('.preloader-wrapper').removeClass('visible');
+      }, function(err){
+        console.log('Error: ' + data);
+      });
     };
 
+    //Update a todo
     $scope.updateTodo = function(todo) {
-      $http.put('/api/todos', todo)
-        .success(function(data) {
-          $scope.todos = data;
-          console.log(data);
-        })
-        .error(function(data) {
-          console.log('Error: ' + data);
-        });
+      angular.element('.preloader-wrapper').addClass('visible');
+      apiService.sendApiRequest(apiService.buildUrl('todos.all'), 'PUT', todo).then(function(response){
+        $scope.todos = response;
+        angular.element('.preloader-wrapper').removeClass('visible');
+      }, function(err){
+        console.log('Error: ' + data);
+      });
     };
 
-    // delete a todo after checking it
+    //Delete a todo
     $scope.deleteTodo = function(id) {
-      $http.delete('/api/todos/' + id)
-        .success(function(data) {
-          $scope.todos = data;
-          console.log(data);
-        })
-        .error(function(data) {
-          console.log('Error: ' + data);
-        });
+      angular.element('.preloader-wrapper').addClass('visible');
+      apiService.sendApiRequest(apiService.buildUrl('todos.item', {id: id}), 'DELETE').then(function(response){
+        $scope.todos = response;
+        angular.element('.preloader-wrapper').removeClass('visible');
+      }, function(err){
+        console.log('Error: ' + data);
+      });
     };
+
 
   });
 

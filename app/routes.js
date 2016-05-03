@@ -3,18 +3,16 @@ var Todo = require('./models/todo');
 module.exports = function(app) {
 
   // server routes ===========================================================
+
   // authentication routes
   app.use('/', function(req, res, next) {
-
-    //console.log(JSON.stringify(req.body));
-    // do logging
     //console.log('middleware');
-    next(); // make sure we go to the next routes and don't stop here
+    next();
   });
 
   //GET
   app.get('/api/todos', function(req, res) {
-    // use mongoose to get all nerds in the database
+    // use mongoose to get all todos in the database
     Todo.find(function(err, todos) {
 
       // if there is an error retrieving, send the error. 
@@ -22,7 +20,7 @@ module.exports = function(app) {
       if (err)
         res.send(err);
 
-      res.json(todos); // return all nerds in JSON format
+      res.json(todos); // return all todos in JSON format
     });
   });
 
